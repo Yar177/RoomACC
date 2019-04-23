@@ -1,6 +1,7 @@
 package com.example.android.todolist.database;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.util.Date;
@@ -16,7 +17,8 @@ public class TaskEntry {
     private int priority;
     private Date updatedAt;
 
-    // TODO (4) Use the Ignore annotation so Room knows that it has to use the other constructor instead
+
+    @Ignore
     public TaskEntry(String description, int priority, Date updatedAt) {
         this.description = description;
         this.priority = priority;
