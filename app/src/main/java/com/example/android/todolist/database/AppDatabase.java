@@ -26,5 +26,6 @@ public abstract class AppDatabase extends RoomDatabase {
         return sInstance;
     }
 
+    public abstract TaskDao taskDao();
 
 }
