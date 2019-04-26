@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 
 import com.example.android.todolist.database.AppDatabase;
+import com.example.android.todolist.database.AppExecutors;
 import com.example.android.todolist.database.TaskEntry;
 
 import java.util.Date;
@@ -112,9 +113,15 @@ public class AddTaskActivity extends AppCompatActivity {
         String description = mEditText.getText().toString();
         int priority = getPriorityFromViews();
         Date date = new Date();
-        TaskEntry taskEntry = new TaskEntry(description, priority, date);
-        mDB.taskDao().insertTask(taskEntry);
-        finish();
+        final TaskEntry taskEntry = new TaskEntry(description, priority, date);
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mDB.taskDao().insertTask(taskEntry);
+                finish();
+            }
+        });
+
     }
 
     /**
