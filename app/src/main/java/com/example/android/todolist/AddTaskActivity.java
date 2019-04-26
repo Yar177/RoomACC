@@ -56,10 +56,8 @@ public class AddTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
-        mDB = AppDatabase.getInstance(getApplicationContext());
-
-
         initViews();
+        mDB = AppDatabase.getInstance(getApplicationContext());
 
         if (savedInstanceState != null && savedInstanceState.containsKey(INSTANCE_TASK_ID)) {
             mTaskId = savedInstanceState.getInt(INSTANCE_TASK_ID, DEFAULT_TASK_ID);
@@ -117,8 +115,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
         TaskEntry taskEntry = new TaskEntry(description, priority, date);
         mDB.taskDao().insertTask(taskEntry);
-
-
+        finish();
     }
 
     /**
