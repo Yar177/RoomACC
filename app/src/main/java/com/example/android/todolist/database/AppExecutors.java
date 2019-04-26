@@ -1,9 +1,13 @@
 package com.example.android.todolist.database;
 
+import android.os.Looper;
+import android.os.Handler;
 import android.support.annotation.MainThread;
+import android.support.annotation.NonNull;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
 
 public class AppExecutors {
     //create singlton class
@@ -15,8 +19,9 @@ public class AppExecutors {
 
     public AppExecutors(Executor diskIO, Executor networkIO, Executor mainThread) {
         this.diskIO = diskIO;
-        this.mainThread = mainThread;
         this.networkIO = networkIO;
+        this.mainThread = mainThread;
+
     }
 
     public static AppExecutors getInstance(){
@@ -35,6 +40,16 @@ public class AppExecutors {
     public Executor mainThread(){return mainThread;}
 
     public Executor networkIO() { return networkIO;}
+
+
+    private static class MainThreadExecutor implements Executor{
+        private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
+
+        @Override
+        public void execute(@NonNull Runnable command) {
+            mainThreadHandler.post(command);
+        }
+    }
 
 
 
