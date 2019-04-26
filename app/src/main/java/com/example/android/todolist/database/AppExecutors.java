@@ -1,20 +1,42 @@
 package com.example.android.todolist.database;
 
+import android.support.annotation.MainThread;
+
 import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class AppExecutors {
     //create singlton class
     private static final Object LOCK = new Object();
     private static AppExecutors sInstance;
     private final Executor diskIO;
-    private final Executor mainTHread;
+    private final Executor mainThread;
     private final Executor networkIO;
 
-    public AppExecutors(Executor diskIO, Executor mainTHread, Executor networkIO) {
+    public AppExecutors(Executor diskIO, Executor networkIO, Executor mainThread) {
         this.diskIO = diskIO;
-        this.mainTHread = mainTHread;
+        this.mainThread = mainThread;
         this.networkIO = networkIO;
     }
+
+    public static AppExecutors getInstance(){
+        if (sInstance == null){
+            synchronized (LOCK){
+                sInstance = new AppExecutors(Executors.newSingleThreadExecutor(),
+                        Executors.newFixedThreadPool(3),
+                        new MainThreadExecutor());
+            }
+        }
+        return sInstance;
+    }
+
+    public Executor diskIO(){return  diskIO;}
+
+    public Executor mainThread(){return mainThread;}
+
+    public Executor networkIO() { return networkIO;}
+
+
 
 
 
