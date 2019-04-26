@@ -120,7 +120,6 @@ public class AddTaskActivity extends AppCompatActivity {
         mEditText.setText(task.getDescription());
         setPriorityInViews(task.getPriority());
 
-
     }
 
     /**
@@ -136,7 +135,13 @@ public class AddTaskActivity extends AppCompatActivity {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                mDB.taskDao().insertTask(taskEntry);
+                if (mTaskId == DEFAULT_TASK_ID){
+                    mDB.taskDao().insertTask(taskEntry);
+                }else {
+                    taskEntry.setId(mTaskId);
+                    mDB.taskDao().updateTask(taskEntry);
+                }
+
                 finish();
             }
         });
