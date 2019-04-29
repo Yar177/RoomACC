@@ -1,8 +1,8 @@
 
 package com.example.android.todolist;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
                         int position = viewHolder.getAdapterPosition();
                         List<TaskEntry> tasks = mAdapter.getTasks();
                         mDB.taskDao().deleteTask(tasks.get(position));
-                        retriveTasks();
+                        setupViewModel();
                     }
                 });
             }
@@ -88,16 +88,17 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
 
         mDB = AppDatabase.getInstance(getApplicationContext());
 
-        retriveTasks();
+        setupViewModel();
     }
 
-    private void retriveTasks() {
-        Log.d(TAG, "retriveTasks: Actively retring the tasks from the AppDatabase");
-        final LiveData<List<TaskEntry>> tasks = mDB.taskDao().loadAllTasks();
-        tasks.observe(this, new Observer<List<TaskEntry>>() {
+    private void setupViewModel() {
+        //Log.d(TAG, "setupViewModel: Actively retring the tasks from the AppDatabase");
+        //final LiveData<List<TaskEntry>> tasks = mDB.taskDao().loadAllTasks();
+        MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        viewModel.getTasks().observe(this, new Observer<List<TaskEntry>>() {
             @Override
             public void onChanged(@Nullable List<TaskEntry> taskEntries) {
-                Log.d(TAG, "onChanged: Receiving database update from LiveData");
+                Log.d(TAG, "onChanged: Receiving database update from LiveData in viewModel");
                 mAdapter.setTasks(taskEntries);
             }
         });
