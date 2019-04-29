@@ -112,12 +112,14 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
         });
 
         mDB = AppDatabase.getInstance(getApplicationContext());
+
+        retriveTasks();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        retriveTasks();
+
     }
 
     private void retriveTasks() {
