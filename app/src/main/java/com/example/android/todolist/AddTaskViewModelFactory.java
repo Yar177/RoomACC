@@ -1,4 +1,8 @@
 package com.example.android.todolist;
 
-public class AddTaskViewModelFactory {
+import android.arch.lifecycle.ViewModelProvider;
+
+public class AddTaskViewModelFactory extends ViewModelProvider.NewInstanceFactory {
+
+
 }
