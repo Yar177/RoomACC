@@ -115,8 +115,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     taskEntry.setId(mTaskId);
                     mDB.taskDao().updateTask(taskEntry);
                 }
-
-                finish();
+               finish();
             }
         });
 
